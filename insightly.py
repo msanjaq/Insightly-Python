@@ -1,10 +1,7 @@
-import json
 import time
 
 import requests
 from requests.auth import HTTPBasicAuth
-from pprint import pprint
-
 
 class Contacts:
     def __init__(self, auth):
@@ -21,7 +18,7 @@ class Contacts:
 
         result = []
         skip = 0
-        top = 5
+        top = 500
 
         while count >= 0:
             url = "{}?brief=false&skip={}&top={}".format(self.base_url,
@@ -40,13 +37,7 @@ class Contacts:
         return result
 
     def update(self, data):
-        req = requests.put(self.base_url, json=data, auth=self.auth)
-
-        if req.status_code == 429:
-            time.sleep(1)
-            req = requests.put(self.base_url, json=data, auth=self.auth)
-
-        return req.json()
+        return requests.put(self.base_url, json=data, auth=self.auth).json()
 
 
 class Insightly:
