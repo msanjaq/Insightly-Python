@@ -50,6 +50,9 @@ class Contacts:
         req.raise_for_status()
         return req.json()
 
+    def create(self, data):
+        req = requests.post(self.base_url, json=data, auth=self.auth)
+
 
 class Insightly:
     def __init__(self, api_key):
