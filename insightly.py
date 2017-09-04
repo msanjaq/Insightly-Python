@@ -85,7 +85,7 @@ class Contacts:
         :type cid: int
         '''
         req = requests.delete(self.base_url+"/"+str(cid), auth=self.auth)
-        self._get_json(req)
+        req.raise_for_status()
 
     def _get_json(self, req):
         '''
