@@ -1,3 +1,4 @@
+import json
 import time
 
 import requests
@@ -36,9 +37,16 @@ class Contacts:
             count -= top
             skip += top
 
-        pprint(result)
-        print(len(result))
         return result
+
+    def update(self, data):
+        req = requests.put(self.base_url, json=data, auth=self.auth)
+
+        if req.status_code == 429:
+            time.sleep(1)
+            req = requests.put(self.base_url, json=data, auth=self.auth)
+
+        return req.json()
 
 
 class Insightly:
