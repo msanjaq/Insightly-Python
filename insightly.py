@@ -3,13 +3,16 @@ import time
 import requests
 from requests.auth import HTTPBasicAuth
 
+
 class Contacts:
     def __init__(self, auth):
         self.auth = auth
         self.base_url = "https://api.insight.ly/v2.2/Contacts"
 
     def get(self, cid):
-        return requests.get(self.base_url+"/"+str(cid), auth=self.auth).json()
+        req = requests.get(self.base_url+"/"+str(cid), auth=self.auth)
+        req.raise_for_status()
+        return req.json()
 
     def get_all(self):
         count_url = self.base_url + "?brief=false&top=1&count_total=true"
@@ -26,9 +29,15 @@ class Contacts:
                                                          top)
             req = requests.get(url, auth=self.auth)
 
-            if req.status_code == 429:
+            if req.status_code == 400:
+                pass
+
+            elif req.status_code == 429:
                 time.sleep(1)
                 req = requests.get(url, auth=self.auth)
+
+            else:
+                req.raise_for_status()
 
             result += req.json()
             count -= top
@@ -37,7 +46,9 @@ class Contacts:
         return result
 
     def update(self, data):
-        return requests.put(self.base_url, json=data, auth=self.auth).json()
+        req = requests.put(self.base_url, json=data, auth=self.auth)
+        req.raise_for_status()
+        return req.json()
 
 
 class Insightly:
