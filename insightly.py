@@ -60,7 +60,7 @@ class Contacts:
     def update(self, data):
         '''
         Updates a contact and returns it's json post-update
-        
+
         :param data: json that will be the result of the update
         :type data: dict
         '''
@@ -70,12 +70,22 @@ class Contacts:
     def create(self, data):
         '''
         Creates a contact and returns it's json post-update
-        
+
         :param data: json that will be the result of the update
         :type data: dict
         '''
         req = requests.post(self.base_url, json=data, auth=self.auth)
         return self._get_json(req)
+
+    def delete(self, cid):
+        '''
+        Deletes a contact and returns none.
+
+        :param cid: id of contact that is to be deleted
+        :type cid: int
+        '''
+        req = requests.delete(self.base_url+"/"+str(cid), auth=self.auth)
+        self._get_json(req)
 
     def _get_json(self, req):
         '''
@@ -83,7 +93,7 @@ class Contacts:
         otherwise returns the json object of the request
 
         :param req: the request that will have its json checked and retuned
-        :type req: requests.Requests 
+        :type req: requests.Requests
         '''
         req.raise_for_status()
         return req.json()
