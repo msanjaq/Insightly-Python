@@ -2,6 +2,7 @@
 
 ## requirements
   Python 3.x
+  
   requests
 
 ## Syntax
@@ -34,6 +35,7 @@ Coming soon: projects, tasks, leads
 
 ### Methods
 Done: get(), get_all(), create(), update(), delete()
+
  
 ## Reasons for creation
 The SDK currently provided by Insightly/insightly-python is littered with bugs that only appear in odd edge cases- some of which I couldn't totally debug and fix even after contacting Insightly's engineering team. Therefore, I found myself having to go back to formulating the API calls myself which proved to be much more consistent. Because of this, I decided to write a new SDK that would encapsulate many common API calls.
@@ -49,6 +51,7 @@ The SDK currently provided by Insightly/insightly-python is littered with bugs t
 
 ## Know bugs and work-arounds
 Bug: For some reason I am unable to create an organisation using Insightly API v2.2
+
 work-around: I am currently using Insightly API v2.1 to add this functionality
 
 
