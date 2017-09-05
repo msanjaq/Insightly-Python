@@ -8,9 +8,9 @@ class Contacts:
     def __init__(self, auth):
         '''
         Initalizes class
+
         :param auth: Authorization needed to use Insightly's API
         :type auth: requests.auth.HTTPBasicAuth
-
         '''
         self.auth = auth
         self.base_url = "https://api.insight.ly/v2.2/Contacts"
@@ -21,6 +21,7 @@ class Contacts:
 
         :param cid: contact's id
         :type cid: int
+        :param brief: Whether the API strips the contact's child objects
         '''
         req = requests.get(self.base_url+"/"+str(cid), auth=self.auth)
         return self._get_json(req)
@@ -54,7 +55,6 @@ class Contacts:
             count -= params["top"]
             params["skip"] += params["top"]
 
-        print(len(result))
         return result
 
     def update(self, data):
@@ -99,7 +99,42 @@ class Contacts:
         return req.json()
 
 
+class Organisations():
+    def __init__(self, auth):
+        '''
+        Initalizes class
+
+        :param auth: Authorization needed to use Insightly's API
+        :type auth: requests.auth.HTTPBasicAuth
+        '''
+        self.auth = auth
+        self.base_url = "https://api.insight.ly/v2.2/Organisations"
+
+    def get(self, oid):
+        '''
+        Returns the json of a single contact
+
+        :param cid: contact's id
+        :type cid: int
+        :param brief: Whether the API strips the contact's child objects
+        '''
+        req = requests.get(self.base_url+"/"+str(oid), auth=self.auth)
+        return self._get_json(req)
+
+    def _get_json(self, req):
+        '''
+        Raises an error if the request status code is not 200,
+        otherwise returns the json object of the request
+
+        :param req: the request that will have its json checked and retuned
+        :type req: requests.Requests
+        '''
+        req.raise_for_status()
+        return req.json()
+
+
 class Insightly:
     def __init__(self, api_key):
         auth = HTTPBasicAuth(api_key, '')
         self.contacts = Contacts(auth)
+        self.organisations = Organisations(auth)
