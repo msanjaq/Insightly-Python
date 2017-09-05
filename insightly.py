@@ -27,6 +27,37 @@ class Entity:
         req = requests.get(self.base_url+"/"+str(eid), auth=self.auth)
         return self._get_json(req)
 
+    def get_all(self, brief=False):
+        '''
+        Returns a list of each entity's json
+
+        :param brief: Whether the API strips the entitys's child objects
+        '''
+        result = []
+
+        params = {"brief": brief, "skip": 0, "top": 500, "count_total": True}
+        req = requests.get(self.base_url, auth=self.auth, params=params)
+        count = int(req.headers["X-Total-Count"])
+
+        while count >= 0:
+            req = requests.get(self.base_url, auth=self.auth, params=params)
+
+            if req.status_code == 200:
+                pass
+
+            elif req.status_code == 429:
+                time.sleep(1)
+                req = requests.get(self.base_url, auth=self.auth)
+
+            else:
+                req.raise_for_status()
+
+            result += req.json()
+            count -= params["top"]
+            params["skip"] += params["top"]
+
+        return result
+
     def update(self, data):
         '''
         Updates a entity and returns it's json post-update
@@ -78,37 +109,6 @@ class Contacts(Entity):
         :type auth: requests.auth.HTTPBasicAuth
         '''
         Entity.__init__(self, auth, "https://api.insight.ly/v2.2/Contacts")
-
-    def get_all(self, brief=False):
-        '''
-        Returns a list of all the contacts
-
-        :param brief: Whether the API strips the contact's child objects
-        '''
-        result = []
-
-        params = {"brief": brief, "skip": 0, "top": 500, "count_total": True}
-        req = requests.get(self.base_url, auth=self.auth, params=params)
-        count = int(req.headers["X-Total-Count"])
-
-        while count >= 0:
-            req = requests.get(self.base_url, auth=self.auth, params=params)
-
-            if req.status_code == 200:
-                pass
-
-            elif req.status_code == 429:
-                time.sleep(1)
-                req = requests.get(self.base_url, auth=self.auth)
-
-            else:
-                req.raise_for_status()
-
-            result += req.json()
-            count -= params["top"]
-            params["skip"] += params["top"]
-
-        return result
 
 
 class Organisations(Entity):
