@@ -4,7 +4,42 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 
-class Contacts:
+class Entity:
+    def __init__(self, auth, base_url):
+        '''
+        Initalizes class
+
+        :param auth: Authorization needed to use Insightly's API
+        :type auth: requests.auth.HTTPBasicAuth
+        :param base_url: the api url base component
+        :type url: str
+        '''
+        self.auth = auth
+        self.base_url = base_url
+
+    def get(self, eid):
+        '''
+        Gets the json of a single entity
+
+        :param eid: Id of the entity
+        :type eid: int
+        '''
+        req = requests.get(self.base_url+"/"+str(eid), auth=self.auth)
+        return self._get_json(req)
+
+    def _get_json(self, req):
+        '''
+        Raises an error if the request status code is not 200,
+        otherwise returns the json object of the request
+
+        :param req: the request that will have its json checked and retuned
+        :type req: requests.Requests
+        '''
+        req.raise_for_status()
+        return req.json()
+
+
+class Contacts(Entity):
     def __init__(self, auth):
         '''
         Initalizes class
@@ -12,19 +47,7 @@ class Contacts:
         :param auth: Authorization needed to use Insightly's API
         :type auth: requests.auth.HTTPBasicAuth
         '''
-        self.auth = auth
-        self.base_url = "https://api.insight.ly/v2.2/Contacts"
-
-    def get(self, cid):
-        '''
-        Returns the json of a single contact
-
-        :param cid: contact's id
-        :type cid: int
-        :param brief: Whether the API strips the contact's child objects
-        '''
-        req = requests.get(self.base_url+"/"+str(cid), auth=self.auth)
-        return self._get_json(req)
+        Entity.__init__(self, auth, "https://api.insight.ly/v2.2/Contacts")
 
     def get_all(self, brief=False):
         '''
@@ -87,50 +110,11 @@ class Contacts:
         req = requests.delete(self.base_url+"/"+str(cid), auth=self.auth)
         req.raise_for_status()
 
-    def _get_json(self, req):
-        '''
-        Raises an error if the request status code is not 200,
-        otherwise returns the json object of the request
 
-        :param req: the request that will have its json checked and retuned
-        :type req: requests.Requests
-        '''
-        req.raise_for_status()
-        return req.json()
-
-
-class Organisations():
+class Organisations(Entity):
     def __init__(self, auth):
-        '''
-        Initalizes class
-
-        :param auth: Authorization needed to use Insightly's API
-        :type auth: requests.auth.HTTPBasicAuth
-        '''
-        self.auth = auth
-        self.base_url = "https://api.insight.ly/v2.2/Organisations"
-
-    def get(self, oid):
-        '''
-        Returns the json of a single contact
-
-        :param cid: contact's id
-        :type cid: int
-        :param brief: Whether the API strips the contact's child objects
-        '''
-        req = requests.get(self.base_url+"/"+str(oid), auth=self.auth)
-        return self._get_json(req)
-
-    def _get_json(self, req):
-        '''
-        Raises an error if the request status code is not 200,
-        otherwise returns the json object of the request
-
-        :param req: the request that will have its json checked and retuned
-        :type req: requests.Requests
-        '''
-        req.raise_for_status()
-        return req.json()
+        Entity.__init__(self, auth,
+                        "https://api.insight.ly/v2.2/Organisations")
 
 
 class Insightly:
