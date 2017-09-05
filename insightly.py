@@ -27,33 +27,29 @@ class Contacts:
 
     def get_all(self):
         '''Returns a list of all the contacts'''
-        count_url = self.base_url + "?brief=false&top=1&count_total=true"
-        count = int(requests.get(count_url,
-                                 auth=self.auth).headers["X-Total-Count"])
-
         result = []
-        skip = 0
-        top = 500
+        params = {"brief": False, "skip": 0, "top": 1, "count_total": True}
+        req = requests.get(self.base_url, auth=self.auth, params=params)
+        count = int(req.headers["X-Total-Count"])
+
+        params["top"] = 500
 
         while count >= 0:
-            url = "{}?brief=false&skip={}&top={}".format(self.base_url,
-                                                         skip,
-                                                         top)
-            req = requests.get(url, auth=self.auth)
+            req = requests.get(self.base_url, auth=self.auth, params=params)
 
             if req.status_code == 200:
                 pass
 
             elif req.status_code == 429:
                 time.sleep(1)
-                req = requests.get(url, auth=self.auth)
+                req = requests.get(self.base_url, auth=self.auth)
 
             else:
                 req.raise_for_status()
 
             result += req.json()
-            count -= top
-            skip += top
+            count -= params["top"]
+            params["skip"] += params["top"]
 
         return result
 
