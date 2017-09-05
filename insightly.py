@@ -25,14 +25,17 @@ class Contacts:
         req = requests.get(self.base_url+"/"+str(cid), auth=self.auth)
         return self._get_json(req)
 
-    def get_all(self):
-        '''Returns a list of all the contacts'''
+    def get_all(self, brief=False):
+        '''
+        Returns a list of all the contacts
+
+        :param brief: Whether the API strips the contact's child objects
+        '''
         result = []
-        params = {"brief": False, "skip": 0, "top": 1, "count_total": True}
+
+        params = {"brief": brief, "skip": 0, "top": 500, "count_total": True}
         req = requests.get(self.base_url, auth=self.auth, params=params)
         count = int(req.headers["X-Total-Count"])
-
-        params["top"] = 500
 
         while count >= 0:
             req = requests.get(self.base_url, auth=self.auth, params=params)
@@ -51,6 +54,7 @@ class Contacts:
             count -= params["top"]
             params["skip"] += params["top"]
 
+        print(len(result))
         return result
 
     def update(self, data):
