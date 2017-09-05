@@ -27,6 +27,26 @@ class Entity:
         req = requests.get(self.base_url+"/"+str(eid), auth=self.auth)
         return self._get_json(req)
 
+    def update(self, data):
+        '''
+        Updates a contact and returns it's json post-update
+
+        :param data: json that will be the result of the update
+        :type data: dict
+        '''
+        req = requests.put(self.base_url, json=data, auth=self.auth)
+        return self._get_json(req)
+
+    def create(self, data):
+        '''
+        Creates a contact and returns it's json post-update
+
+        :param data: json that will be the result of the update
+        :type data: dict
+        '''
+        req = requests.post(self.base_url, json=data, auth=self.auth)
+        return self._get_json(req)
+
     def _get_json(self, req):
         '''
         Raises an error if the request status code is not 200,
@@ -79,26 +99,6 @@ class Contacts(Entity):
             params["skip"] += params["top"]
 
         return result
-
-    def update(self, data):
-        '''
-        Updates a contact and returns it's json post-update
-
-        :param data: json that will be the result of the update
-        :type data: dict
-        '''
-        req = requests.put(self.base_url, json=data, auth=self.auth)
-        return self._get_json(req)
-
-    def create(self, data):
-        '''
-        Creates a contact and returns it's json post-update
-
-        :param data: json that will be the result of the update
-        :type data: dict
-        '''
-        req = requests.post(self.base_url, json=data, auth=self.auth)
-        return self._get_json(req)
 
     def delete(self, cid):
         '''
