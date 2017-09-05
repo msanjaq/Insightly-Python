@@ -26,8 +26,14 @@
     client.organisations.delete(123456789)
  
 ## Progress
+
+### Entities
 Done: contacts and organisations
+
 Coming soon: projects, tasks, leads
+
+### Methods
+Done: get(), get_all(), create(), update(), delete()
  
 ## Reasons for creation
 The SDK currently provided by Insightly/insightly-python is littered with bugs that only appear in odd edge cases- some of which I couldn't totally debug and fix even after contacting Insightly's engineering team. Therefore, I found myself having to go back to formulating the API calls myself which proved to be much more consistent. Because of this, I decided to write a new SDK that would encapsulate many common API calls.
