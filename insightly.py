@@ -116,6 +116,19 @@ class Organisations(Entity):
         Entity.__init__(self, auth,
                         "https://api.insight.ly/v2.2/Organisations")
 
+    def create(self, data):
+        # we are using v2.1 of the API since v2.2 seems to have a bug with
+        # creating an organisation
+        '''
+        Creates a contact and returns it's json post-update
+
+        :param data: json that will be the result of the update
+        :type data: dict
+        '''
+        url = "https://api.insight.ly/v2.1/Organisations"
+        req = requests.post(url, json=data, auth=self.auth)
+        return self._get_json(req)
+
 
 class Insightly:
     def __init__(self, api_key):
