@@ -130,8 +130,15 @@ class Organisations(Entity):
         return self._get_json(req)
 
 
+class Tasks(Entity):
+    def __init__(self, auth):
+        Entity.__init__(self, auth,
+                        "https://api.insight.ly/v2.2/Tasks")
+
+
 class Insightly:
     def __init__(self, api_key):
         auth = HTTPBasicAuth(api_key, '')
         self.contacts = Contacts(auth)
         self.organisations = Organisations(auth)
+        self.tasks = Tasks(auth)
