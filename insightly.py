@@ -148,6 +148,12 @@ class Leads(Entity):
                         "https://api.insight.ly/v2.2/leads")
 
 
+class Opportunities(Entity):
+    def __init__(self, auth):
+        Entity.__init__(self, auth,
+                        "https://api.insight.ly/v2.2/Opportunities")
+
+
 class Insightly:
     def __init__(self, api_key):
         auth = HTTPBasicAuth(api_key, '')
@@ -156,3 +162,4 @@ class Insightly:
         self.tasks = Tasks(auth)
         self.projects = Projects(auth)
         self.leads = Leads(auth)
+        self.opportunities = Opportunities(auth)
