@@ -62,7 +62,49 @@ Below I list all the entities and their methods that this library offers. I prov
 
     client.organisations.delete(id: int)
     
- 
+### Projects    
+    client.projects.get(id: int)
+
+    client.projects.get_all(brief=False)
+
+    client.projects.create(data)
+
+    client.projects.update(data)
+
+    client.projects.delete(id: int)
+
+### Tasks
+    client.tasks.get(id: int)
+
+    client.tasks.get_all(brief=False)
+
+    client.tasks.create(data)
+
+    client.tasks.update(data)
+
+    client.tasks.delete(id: int)
+    
+### Leads
+    client.leads.get(id: int)
+
+    client.leads.get_all(brief=False)
+
+    client.leads.create(data)
+
+    client.leads.update(data)
+
+    client.leads.delete(id: int)
+
+### Opportunities
+    client.opportunities.get(id: int)
+
+    client.opportunities.get_all(brief=False)
+
+    client.opportunities.create(data)
+
+    client.opportunities.update(data)
+
+    client.opportunities.delete(id: int)
 
 
 ## Reasons for creation
@@ -81,6 +123,3 @@ The SDK currently provided by Insightly/insightly-python is littered with bugs t
 Bug: For some reason I am unable to create an organisation using Insightly API v2.2
 
 work-around: I am currently using Insightly API v2.1 to add this functionality
-
-
-
