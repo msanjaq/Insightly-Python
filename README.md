@@ -1,4 +1,4 @@
-# insightly-python-sdk
+# Insightly-Python Development Kit
 
 ## requirements
 Python 3.x
